@@ -1,0 +1,220 @@
+.review-section {
+    width: 100%;
+    padding: 1.5rem;
+    background: linear-gradient(to bottom, white, #f3f4f6);
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  
+    .overall-ratings {
+      margin-bottom: 2rem;
+  
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+  
+        h2 {
+          font-size: 1.875rem;
+          font-weight: 700;
+          color: #1f2937;
+        }
+  
+        .rate-button {
+          padding: 0.75rem 1.5rem;
+          background-color: #2563eb;
+          color: white;
+          border-radius: 0.5rem;
+  
+          &:hover {
+            background-color: #1d4ed8;
+          }
+        }
+      }
+  
+      .ratings-container {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-top: 1.5rem;
+  
+        .average-rating {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+  
+          h3 {
+            font-size: 3.75rem;
+            font-weight: 700;
+            color: #eab308;
+          }
+  
+          p {
+            color: #4b5563;
+            font-size: 1.125rem;
+          }
+        }
+  
+        .star-breakdown {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          width: 100%;
+  
+          .star-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+  
+            .star-label {
+              color: #4b5563;
+              font-weight: 500;
+            }
+  
+            .progress-bar-container {
+              width: 100%;
+              height: 0.5rem;
+              background-color: #e5e7eb;
+              border-radius: 9999px;
+  
+              .progress-bar {
+                height: 0.5rem;
+                border-radius: 9999px;
+  
+                &.star-5 {
+                  background-color: #10b981;
+                }
+                &.star-4 {
+                  background-color: #34d399;
+                }
+                &.star-3 {
+                  background-color: #facc15;
+                }
+                &.star-2 {
+                  background-color: #fb923c;
+                }
+                &.star-1 {
+                  background-color: #ef4444;
+                }
+              }
+            }
+  
+            .star-count {
+              color: #4b5563;
+              font-size: 0.875rem;
+            }
+          }
+        }
+      }
+    }
+  
+    .user-reviews {
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 1.5rem;
+      }
+  
+      .reviews-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+  
+        @media (min-width: 768px) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+  
+        .review-card {
+          padding: 1rem;
+          background-color: white;
+          border-radius: 0.5rem;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          transition: box-shadow 0.3s ease;
+  
+          &:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+          }
+  
+          .review-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+  
+            .stars {
+              color: #eab308;
+              display: flex;
+            }
+  
+            .review-date {
+              color: #6b7280;
+              font-size: 0.875rem;
+            }
+          }
+  
+          .reviewer-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #1f2937;
+          }
+  
+          .review-text {
+            color: #374151;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+          }
+  
+          .reviewer-info {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+  
+            .name {
+              color: #1f2937;
+              font-weight: 500;
+            }
+          }
+  
+          .review-images {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+  
+            img {
+              width: 4rem;
+              height: 4rem;
+              border-radius: 0.5rem;
+              object-fit: cover;
+            }
+          }
+  
+          .review-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+  
+            button {
+              display: flex;
+              align-items: center;
+              gap: 0.25rem;
+              color: #6b7280;
+  
+              &:hover {
+                &.helpful {
+                  color: #16a34a;
+                }
+                &.not-helpful {
+                  color: #dc2626;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
