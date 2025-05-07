@@ -2,7 +2,6 @@ import React from "react";
 import OwlCarousel from "react-owl-carousel";
 import OfferBanner from '../../assets/images/offer-banner.png'
 
-
 function BannerAdd() {
 return (
 <div className="banner-add-sec">

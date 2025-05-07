@@ -46,7 +46,6 @@ const handleLogin = async () => {
                 theme: "light",
             });
             window.location.reload()
-            console.log("Login Successful:", response.data);
             onClose(); // Close modal on success
         } else {
             toast.error("Login failed. Please try again. ❌", {

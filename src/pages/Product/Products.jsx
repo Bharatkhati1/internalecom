@@ -6,44 +6,79 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getprodData } from "../../Services/prodApiServices";
+import { filterProducts, getprodData } from "../../Services/prodApiServices";
 import ProductInfo from "../../Components/Common/ProductInfo";
-import { postecomData } from "../../Services/ecomapiServices";
+import { getecomData, postecomData } from "../../Services/ecomapiServices";
 import { addToCart, fetchCartCount } from "../../redux/orebiSlice";
+import { toast } from "react-toastify";
 
 function Products() {
   const { categoryName } = useParams();
   const [products, setProducts] = useState([]);
-  const { cartProducts = [] } = useSelector((state) => state.orebi);
+  const { cartProducts = [], wishlist = [] } = useSelector(
+    (state) => state.orebi
+  );
   const [filters, setFilters] = useState({});
+  const [sortOption, setSortOption] = useState(""); // 'price', 'name', etc.
+  const [sortDirection, setSortDirection] = useState(""); // 'asc', 'desc'
   const [selectedFilters, setSelectedFilters] = useState({});
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1); // Add state for current page
+  const [pageSize, setPageSize] = useState(10); // Set page size to limit number of products per page
   const dispatch = useDispatch();
 
+  const handleCheckboxChange = (filterKey, option) => {
+    setSelectedFilters((prevFilters) => {
+      const newFilters = { ...prevFilters };
+  
+      const currentOptions = newFilters[filterKey] ? [...newFilters[filterKey]] : [];
+  
+      if (currentOptions.includes(option)) {
+        newFilters[filterKey] = currentOptions.filter((item) => item !== option);
+      } else {
+        newFilters[filterKey] = [...currentOptions, option];
+      }
+  
+      return newFilters;
+    });
+  };
+  
   const cartProductIds = cartProducts.map((p) => p.id);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const endpoint = categoryName
-        ? `/products/categories/${categoryName}`
-        : "/products";
+      const filterPayload = {};
+
+      if (categoryName) filterPayload.categoryName = categoryName;
+      if (searchQuery?.trim()) filterPayload.search = searchQuery.trim();
+
+      // Pass sort options
+      if (sortOption) filterPayload.sortBy = sortOption;
+      if (sortDirection) filterPayload.order = sortDirection;
+
+      const attributeFilters = Object.entries(selectedFilters || {}).flatMap(
+        ([name, values]) => values.map((value) => ({ name, value }))
+      );
+
+      if (attributeFilters.length) {
+        filterPayload.attributeFilters = attributeFilters;
+      }
+
+      filterPayload.page = currentPage; // Use currentPage state
+      filterPayload.limit = pageSize; // Use pageSize state
 
       const [productRes, filterRes] = await Promise.all([
-        getprodData(endpoint),
+        filterProducts("/filters/filter", filterPayload),
         categoryName
           ? getprodData(`/filters/category/${categoryName}`)
           : Promise.resolve({ data: { status: false, data: [] } }),
       ]);
 
-      // Handle products
-      if (productRes?.data?.status === true) {
-        setProducts(productRes.data.data || []);
-      } else {
-        throw new Error("Failed to fetch products");
-      }
+      setProducts(productRes.data.data || []);
 
-      // Handle filters
+      // // Handle filters
       if (
         filterRes?.data?.status === true &&
         Array.isArray(filterRes.data.data)
@@ -53,23 +88,15 @@ function Products() {
           return acc;
         }, {});
         setFilters(filtersData);
-        setSelectedFilters(
-          Object.keys(filtersData).reduce((acc, key) => {
-            acc[key] = [];
-            return acc;
-          }, {})
-        );
       } else {
         setFilters({});
-        setSelectedFilters({});
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      // Optionally show user-friendly error
     } finally {
       setLoading(false);
     }
-  }; 
+  };
 
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
@@ -84,32 +111,28 @@ function Products() {
       const response = await postecomData("cart/add", cartData);
       dispatch(addToCart(product));
       dispatch(fetchCartCount(userDetails.id));
+      toast.success("Successfully added to cart.");
     } else {
-      alert("Please login to add items to your cart.");
+      toast.error("Please login to add items to your cart.");
     }
   };
-  
-  const handleCheckboxChange = (category, option) => {
-    setSelectedFilters((prevSelected) => ({
-      ...prevSelected,
-      [category]: prevSelected[category]?.includes(option)
-        ? prevSelected[category].filter((item) => item !== option)
-        : [...prevSelected[category], option],
-    }));
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
-  const clearAllFilters = () => {
-    setSelectedFilters(
-      Object.keys(filters).reduce((acc, key) => {
-        acc[key] = [];
-        return acc;
-      }, {})
-    );
-  };
+  const getTopDeals = async()=>{
+    try {
+      await getecomData("/discounts/top/deals")
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     fetchData();
-  }, [categoryName]);
+    getTopDeals()
+  }, [categoryName, currentPage, sortOption, sortDirection, selectedFilters]);
 
   return (
     <section>
@@ -258,46 +281,91 @@ function Products() {
                   <select
                     className="form-select"
                     aria-label="Default select example"
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "price-asc") {
+                        setSortOption("price");
+                        setSortDirection("asc");
+                      } else if (value === "price-desc") {
+                        setSortOption("price");
+                        setSortDirection("desc");
+                      } else if (value === "name-asc") {
+                        setSortOption("name");
+                        setSortDirection("asc");
+                      } else if (value === "name-desc") {
+                        setSortOption("name");
+                        setSortDirection("desc");
+                      }
+                    }}
                   >
-                    <option selected="">Relevance</option>
-                    <option value="1">Best sellers</option>
-                    <option value="2">Name, A to Z</option>
-                    <option value="3">Name, Z to A</option>
+                    <option value="">Select Filter</option>
+                    <option value="name-asc">Name, A to Z</option>
+                    <option value="name-desc">Name, Z to A</option>
+                    <option value="price-asc">Price, low to high</option>
+                    <option value="price-desc">Price, high to low</option>
                   </select>
                 </div>
               </div>
-              <div className="row" >
-                  {products.map((product) => (
-                    <ProductInfo
-                      product={product}
-                      handleAddToCart={handleAddToCart}
-                      cartProductIds={cartProductIds}
-                    />
-                  ))}
+              <div className="row">
+                {products.map((product) => (
+                  <ProductInfo
+                    product={product}
+                    handleAddToCart={handleAddToCart}
+                    cartProductIds={cartProductIds}
+                  />
+                ))}
               </div>
               <ul className="pagination">
                 <li className="page-item">
-                  <a className="page-link" href="#" aria-label="Previous">
+                  <a
+                    className="page-link"
+                    href="#"
+                    aria-label="Previous"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                  >
                     <span aria-hidden="true">«</span>
                   </a>
                 </li>
-                <li className="page-item active">
-                  <a className="page-link " href="#">
+                <li
+                  className={`page-item ${currentPage === 1 ? "active" : ""}`}
+                >
+                  <a
+                    className="page-link"
+                    href="#"
+                    onClick={() => handlePageChange(1)}
+                  >
                     1
                   </a>
                 </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
+                <li
+                  className={`page-item ${currentPage === 2 ? "active" : ""}`}
+                >
+                  <a
+                    className="page-link"
+                    href="#"
+                    onClick={() => handlePageChange(2)}
+                  >
                     2
                   </a>
                 </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
+                <li
+                  className={`page-item ${currentPage === 3 ? "active" : ""}`}
+                >
+                  <a
+                    className="page-link"
+                    href="#"
+                    onClick={() => handlePageChange(3)}
+                  >
                     3
                   </a>
                 </li>
                 <li className="page-item">
-                  <a className="page-link" href="#" aria-label="Next">
+                  <a
+                    className="page-link"
+                    href="#"
+                    aria-label="Next"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                  >
                     <span aria-hidden="true">»</span>
                   </a>
                 </li>

@@ -1,333 +1,93 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OwlCarousel from "react-owl-carousel";
-import ProductImg1 from "../../assets/images/product-img-1.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  faStar,
-  faHeart,
-  faArrowUpRightFromSquare,
-} from "@fortawesome/free-solid-svg-icons";
+  addToCart,
+  fetchCartCount,
+  fetchRecentlyViewed,
+} from "../../redux/orebiSlice";
+import ProductInfo from "../Common/ProductInfo";
+import { postecomData } from "../../Services/ecomapiServices";
+import { toast } from "react-toastify";
 
-function RecentView() {
+const carouselOptions = {
+  className: "owl-theme",
+  margin: 20,
+  nav: true,
+  dots: false,
+  autoplayTimeout: 3000,
+  items: 5,
+  responsive: {
+    0: { items: 1 },
+    600: { items: 3 },
+    1000: { items: 5 },
+  },
+};
+
+function RecentView({ wishListProductId }) {
+  const dispatch = useDispatch();
+  const { recentlyViewed, cartProducts = [] } = useSelector(
+    (state) => state.orebi
+  );
+
+  const cartProductIds = cartProducts.map((p) => p.id || p._id);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleAddToCart = async (product) => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    const userDetails = JSON.parse(user);
+    if (token && user) {
+      const cartData = {
+        userId: userDetails.id,
+        productId: product.id,
+        quantity: 1,
+      };
+      const response = await postecomData("cart/add", cartData);
+      dispatch(addToCart(product));
+      dispatch(fetchCartCount(userDetails.id));
+      toast.success("Successfully added to cart.");
+    } else {
+      toast.error("Please login to add items to your cart.");
+    }
+  };
+  
+  useEffect(() => {
+    dispatch(fetchRecentlyViewed(user?.id));
+  }, []);
+
+  const renderProducts = (products, type) => (
+    <OwlCarousel
+      key={cartProductIds.join(",") + wishListProductId.join(",") + type}
+      {...carouselOptions}
+    >
+      {products.map((product) => (
+        <ProductInfo
+          wishListProductId={wishListProductId}
+          key={product?.product?.id}
+          product={product?.product}
+          inventory={product?.inventory}
+          handleAddToCart={handleAddToCart}
+          cartProductIds={cartProductIds}
+        />
+      ))}
+    </OwlCarousel>
+  );
   return (
-    <section className="recent-products">
-      <div className="container">
-        <div className="head-title">
-          <h2>Recent View</h2>
-        </div>
+    <>
+      {recentlyViewed.length > 0 && (
+        <section className="recent-products">
+          <div className="container">
+            <div className="head-title">
+              <h2>Recent View</h2>
+            </div>
 
-        <div className="Newprdoucts">
-          <OwlCarousel
-            className="owl-theme"
-            margin={25}
-            nav
-            //   autoplay
-            items={5}
-            dots={false}
-            autoplayTimeout={3000}
-            responsive={{
-              0: { items: 1 },
-              600: { items: 3 },
-              1000: { items: 5 },
-            }}
-          >
-            <div className="item">
-              <div className="product-sec-slider box-border">
-                <div className="info-tag">
-                  <ul className="info-tag-list">
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faHeart} />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <figure>
-                  <img src={ProductImg1} />
-                </figure>
-                <figcaption>
-                  <span>Headphones</span>
-                  <h3>Pioneer DJ HDJ-X5-S Professional </h3>
-                  <ul className="rating-star">
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                  </ul>
-                  <div className="price-tag">
-                    <p>
-                      $602.00 <del>$602.00</del>
-                    </p>
-                  </div>
-                  <a className="btn btn-primary">Add to cart</a>
-                </figcaption>
-              </div>
-            </div>
-            <div className="item">
-              <div className="product-sec-slider box-border">
-                <div className="info-tag">
-                  <ul className="info-tag-list">
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faHeart} />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <figure>
-                  <img src={ProductImg1} />
-                </figure>
-                <figcaption>
-                  <span>Headphones</span>
-                  <h3>Pioneer DJ HDJ-X5-S Professional </h3>
-                  <ul className="rating-star">
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                  </ul>
-                  <div className="price-tag">
-                    <p>
-                      $602.00 <del>$602.00</del>
-                    </p>
-                  </div>
-                  <a className="btn btn-primary">Add to cart</a>
-                </figcaption>
-              </div>
-            </div>
-            <div className="item">
-              <div className="product-sec-slider box-border">
-                <div className="info-tag">
-                  <ul className="info-tag-list">
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faHeart} />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <figure>
-                  {" "}
-                  <img src={ProductImg1} />
-                </figure>
-                <figcaption>
-                  <span>Headphones</span>
-                  <h3>Pioneer DJ HDJ-X5-S Professional </h3>
-                  <ul className="rating-star">
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                  </ul>
-                  <div className="price-tag">
-                    <p>
-                      $602.00 <del>$602.00</del>
-                    </p>
-                  </div>
-                  <a className="btn btn-primary">Add to cart</a>
-                </figcaption>
-              </div>
-            </div>
-            <div className="item">
-              <div className="product-sec-slider box-border">
-                <div className="info-tag">
-                  <ul className="info-tag-list">
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faHeart} />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <figure>
-                  {" "}
-                  <img src={ProductImg1} />
-                </figure>
-                <figcaption>
-                  <span>Headphones</span>
-                  <h3>Pioneer DJ HDJ-X5-S Professional </h3>
-                  <ul className="rating-star">
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                  </ul>
-                  <div className="price-tag">
-                    <p>
-                      $602.00 <del>$602.00</del>
-                    </p>
-                  </div>
-                  <a className="btn btn-primary">Add to cart</a>
-                </figcaption>
-              </div>
-            </div>
-            <div className="item">
-              <div className="product-sec-slider box-border">
-                <div className="info-tag">
-                  <ul className="info-tag-list">
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faHeart} />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <figure>
-                  {" "}
-                  <img src={ProductImg1} />
-                </figure>
-                <figcaption>
-                  <span>Headphones</span>
-                  <h3>Pioneer DJ HDJ-X5-S Professional </h3>
-                  <ul className="rating-star">
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                  </ul>
-                  <div className="price-tag">
-                    <p>
-                      $602.00 <del>$602.00</del>
-                    </p>
-                  </div>
-                  <a className="btn btn-primary">Add to cart</a>
-                </figcaption>
-              </div>
-            </div>
-            <div className="item">
-              <div className="product-sec-slider box-border">
-                <div className="info-tag">
-                  <ul className="info-tag-list">
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faHeart} />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <figure>
-                  {" "}
-                  <img src={ProductImg1} />
-                  ,/
-                </figure>
-                <figcaption>
-                  <span>Headphones</span>
-                  <h3>Pioneer DJ HDJ-X5-S Professional </h3>
-                  <ul className="rating-star">
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                    <li>
-                      <FontAwesomeIcon icon={faStar} />
-                    </li>
-                  </ul>
-                  <div className="price-tag">
-                    <p>
-                      $602.00 <del>$602.00</del>
-                    </p>
-                  </div>
-                  <a className="btn btn-primary">Add to cart</a>
-                </figcaption>
-              </div>
-            </div>
-          </OwlCarousel>
-        </div>
-      </div>
-    </section>
+            <div className="Newprdoucts">{renderProducts(recentlyViewed)}</div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }
 

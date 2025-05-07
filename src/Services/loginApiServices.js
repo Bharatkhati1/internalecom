@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "https://dotecom.24livehost.com/login"; // Change this to your API base URL
+const BASE_URL = "http://localhost:3007"; 
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -30,6 +30,17 @@ export const postloginData = async (endpoint, data) => {
   }
 };
 
+export const putUpdateAddressData = async (endpoint, data) => {
+  try {
+    const response = await api.put(endpoint, data);
+    return response;
+  } catch (error) {
+    console.error("API POST Error:", error);
+    throw error;
+  }
+};
+
+
 // Function to handle PUT requests
 export const putloginData = async (endpoint, data) => {
   try {
@@ -48,6 +59,36 @@ export const deleteloginData = async (endpoint) => {
     return response;
   } catch (error) {
     console.error("API DELETE Error:", error);
+    throw error;
+  }
+};
+
+export const forgotPassword = async (endpoint, data) =>{
+  try {
+    const response = await api.post(endpoint, data);
+    return response;
+  } catch (error) {
+    console.error("API DELETE Error:", error);
+    throw error;
+  }
+};
+
+export const deleteUserAddress = async (endpoint) => {
+  try {
+    const response = await api.delete(endpoint);
+    return response;
+  } catch (error) {
+    console.error("API GET Error:", error);
+    throw error;
+  }
+};
+
+export const setDefaultAddress = async(endpoint, data) => {
+  try {
+    const response = await api.post(endpoint, data);
+    return response;
+  } catch (error) {
+    console.error("API GET Error:", error);
     throw error;
   }
 };

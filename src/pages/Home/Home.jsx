@@ -11,20 +11,23 @@ import DiscoverCollection from "../../Components/Home/DiscoverCollection";
 import ProductsSection from "../../Components/Home/ProductsSection";
 import RecentView from "../../Components/Home/RecentView";
 import FooterSec from "../../Components/Home/FooterSec";
+import { useSelector } from "react-redux";
 
 // import NewProducts from './NewProducts'
 
 function Home() {
+  const {wishlist=[]} = useSelector((state)=> state.orebi)
+  const wishListProductId = wishlist.map((item)=> item.product.id);
   return (
     <>
       <Slider /> 
       <Category />
       <BannerAdd />
-      <ProductsSection />
+      <ProductsSection wishListProductId={wishListProductId} />
       <LatestBlog />
-      <SpecialOffer />
+      <SpecialOffer wishListProductId={wishListProductId} />                                                                                                              
       <DiscoverCollection />
-      <RecentView />
+      <RecentView wishListProductId={wishListProductId} />
     </>
   );
 }

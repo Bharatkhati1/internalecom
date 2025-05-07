@@ -27,7 +27,6 @@ const ReviewSection = ({ productId }) => {
           fetchedReviews.map(async (review) => {
             try {
               const userResponse = await getloginData(`/users/${review.userId}`);
-              console.log({userResponse})
               if (userResponse.status===200) {
                 const userData = userResponse.data;
                 return {

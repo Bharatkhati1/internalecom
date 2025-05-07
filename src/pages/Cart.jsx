@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteecomData, getecomData } from "../Services/ecomapiServices";
 import CartItem from "./CartItem";
 import { getprodData } from "../Services/prodApiServices";
+import { toast } from "react-toastify";
 
 function Cart() {
   const { cartProducts } = useSelector((state) => state.orebi);
@@ -31,6 +32,7 @@ function Cart() {
       console.error("Error: productId is undefined before API call");
       return;
     }
+    toast.loading("Please wait...")
     try {
       const userId = user.id;
       const response = await deleteecomData(
@@ -40,6 +42,8 @@ function Cart() {
         dispatch(deleteItem(productId));
         dispatch(fetchCartCount(userId))
         fetchCartData();
+        toast.dismiss()
+        toast.success("Item removed from cart")
       } else {
         console.error("Failed to delete item from cart");
       }

@@ -218,3 +218,137 @@
       }
     }
   }
+
+  .p-save-method{
+   font-size: 18px;
+   text-decoration: underline;
+  }
+
+  .savedPayment-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .payment-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+  
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+  
+    &.default-method {
+      border-color: #4a6bff;
+      background: #f5f8ff;
+      border-left: 4px solid #4a6bff;
+    }
+  
+    .tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #4a6bff;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      border-radius: 20px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+  
+      &.default-tag {
+        background: #10b981;
+      }
+    }
+  
+    .method-details {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #444;
+  
+      p {
+        margin: 0.5rem 0;
+        display: flex;
+        align-items: center;
+  
+        &:before {
+          content: "•";
+          color: #4a6bff;
+          margin-right: 0.5rem;
+          font-size: 1.2rem;
+        }
+      }
+    }
+  
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+  
+      button {
+        background: transparent;
+        border: 1px solid #e0e0e0;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+         
+        &:hover {
+          background: #f5f5f5;
+          border-color: #ccc;
+        }
+  
+        svg {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+
+  .add-new-method{
+    background: transparent;
+    border: 1px solid #e0e0e0;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+     
+    &:hover {
+      background: #f5f5f5;
+      border-color: #ccc;
+      font-weight: 600;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .cod-selected{
+    font-weight: 600;
+    color:  #4a6bff;
+    margin-top: -25px;
+  }

@@ -12,6 +12,7 @@ import {
 } from "../../redux/orebiSlice";
 import ProductInfo from "../Common/ProductInfo";
 import { postecomData } from "../../Services/ecomapiServices";
+import { toast } from "react-toastify";
 
 const carouselOptions = {
   className: "owl-theme",
@@ -52,8 +53,9 @@ function SpecialOffer() {
       const response = await postecomData("cart/add", cartData);
       dispatch(addToCart(product));
       dispatch(fetchCartCount(userDetails.id));
+      toast.success("Successfully added to cart.");
     } else {
-      alert("Please login to add items to your cart.");
+      toast.error("Please login to add items to your cart.");
     }
   };
 
@@ -71,15 +73,21 @@ function SpecialOffer() {
   );
 
   return (
-    <div className="special-offers">
-      <div className="container">
-        <div className="head-title">
-          <span>Categories</span>
-          <h2>Special Offers</h2>
+    <>
+      {specialOfferProduct.length > 0 && (
+        <div className="special-offers">
+          <div className="container">
+            <div className="head-title">
+              <span>Categories</span>
+              <h2>Special Offers</h2>
+            </div>
+            <div className="container">
+              {renderProducts(specialOfferProduct)}
+            </div>
+          </div>
         </div>
-        <div className="container">{renderProducts(specialOfferProduct)}</div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 export default SpecialOffer;

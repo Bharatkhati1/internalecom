@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "https://dotecom.24livehost.com/product"; // Change this to your API base URL
+const BASE_URL = "http://localhost:3001"; // Change this to your API base URL
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -12,6 +12,16 @@ const api = axios.create({
 export const getprodData = async (endpoint) => {
   try {
     const response = await api.get(endpoint);
+    return response;
+  } catch (error) {
+    console.error("API GET Error:", error);
+    throw error;
+  }
+};
+
+export const filterProducts = async (endpoint, data) => {
+  try {
+    const response = await api.post(endpoint, data);
     return response;
   } catch (error) {
     console.error("API GET Error:", error);

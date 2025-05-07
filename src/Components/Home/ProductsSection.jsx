@@ -11,6 +11,7 @@ import {
 } from "../../redux/orebiSlice.jsx";
 import ProductInfo from "../Common/ProductInfo.jsx";
 import { postecomData } from "../../Services/ecomapiServices.js";
+import { toast } from "react-toastify";
 
 const carouselOptions = {
   className: "owl-theme",
@@ -26,7 +27,7 @@ const carouselOptions = {
   },
 };
 
-const ProductsSection = () => {
+const ProductsSection = ({wishListProductId}) => {
   const dispatch = useDispatch();
   const {
     newProducts = [],
@@ -54,17 +55,20 @@ const ProductsSection = () => {
       const response = await postecomData("cart/add", cartData);
       dispatch(addToCart(product));
       dispatch(fetchCartCount(userDetails.id));
+      toast.success("Successfully added to cart.");
     } else {
-      alert("Please login to add items to your cart.");
+      toast.error("Please login to add items to your cart.");
     }
   };
 
   const renderProducts = (products, type) => (
-    <OwlCarousel key={cartProductIds.join(",") + type} {...carouselOptions}>
+    <OwlCarousel key={cartProductIds.join(",") + wishListProductId.join(",") + type} {...carouselOptions}>
       {products.map((product) => (
         <ProductInfo
+          wishListProductId={wishListProductId}
           key={product.id}
           product={product}
+          inventory={[]}
           handleAddToCart={handleAddToCart}
           cartProductIds={cartProductIds}
         />

@@ -4,7 +4,6 @@ const ForgotPasswordPopup = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
 
   const handleReset = () => {
-    console.log("Password reset requested for:", email);
     onClose(); // Close modal after submission
   };
 

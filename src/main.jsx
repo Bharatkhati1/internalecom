@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./assets/css/index.css";
 import "./assets/css/responsive.css";
 import App from "./App.jsx";
+import { registerServiceWorker } from "./Services/firebase.js";
 import { PersistGate } from "redux-persist/integration/react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "owl.carousel/dist/assets/owl.carousel.css";
@@ -19,3 +20,6 @@ createRoot(document.getElementById("root")).render(
     </PersistGate>
   </Provider>
 );
+
+// Register service worker
+registerServiceWorker();

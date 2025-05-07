@@ -13,19 +13,26 @@ import Topbar from "./Topbar";
 import Menu from "../Header/Menu";
 import "./Home.scss";
 import { useLocation, useNavigate } from "react-router-dom";
-import { fetchCartCount, fetchCartData, logOut, resetCart } from "../../redux/orebiSlice";
+import {
+  fetchCartCount,
+  fetchCartData,
+  fetchWishlist,
+  logOut,
+  resetCart,
+} from "../../redux/orebiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { searchProduct } from "../../Services/prodApiServices";
 import { debounce } from "../CustomeHook/useDebouncedSearch";
+import { toast } from "react-toastify";
 function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-  const { cartCount } = useSelector((state) => state.orebi);
+  const { cartCount, wishlist } = useSelector((state) => state.orebi);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [user, setUSer ] = useState(() =>
+  const [user, setUSer] = useState(() =>
     JSON.parse(localStorage.getItem("user"))
   );
 
@@ -33,27 +40,32 @@ function Header() {
     dispatch(logOut());
     dispatch(resetCart());
     navigate("/");
-    window.location.reload();
+    toast.success("Logout successfully");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   async function searchProducts(query) {
     if (!query) {
-      console.error('Search query is required.');
+      console.error("Search query is required.");
       return;
     }
     try {
-      const response = await searchProduct(`/search?query=${encodeURIComponent(query)}`);
+      const response = await searchProduct(
+        `/search?query=${encodeURIComponent(query)}`
+      );
       const data = response.data;
       return data.products;
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error("Search failed:", error);
     }
   }
-  
+
   const handleSearchChange = async (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-  
+
     if (value.length > 0) {
       const suggestedProduct = await searchProducts(value);
       setSuggestions(suggestedProduct || []);
@@ -61,9 +73,9 @@ function Header() {
       setSuggestions([]);
     }
   };
-  
+
   const debouncedHandleSearchChange = debounce(handleSearchChange, 500);
-  
+
   const handleSelect = (id) => {
     setSearchTerm("");
     setSuggestions([]);
@@ -71,6 +83,7 @@ function Header() {
   };
 
   useEffect(() => {
+    dispatch(fetchWishlist(user?.id))
     dispatch(fetchCartCount(user?.id));
   }, [dispatch]);
 
@@ -80,7 +93,7 @@ function Header() {
       <div className="sec-heade">
         <div className="container">
           <div className="sec-heade-inner d-flex justify-content-between">
-            <a onClick={()=> navigate("/")} className="company-logo">
+            <a onClick={() => navigate("/")} className="company-logo">
               <img className="logo-img" src={logoImage} />
             </a>
             {location?.pathname === "/" ? (
@@ -107,7 +120,9 @@ function Header() {
                       {suggestions.map((item) => (
                         <li key={item.id} onClick={() => handleSelect(item.id)}>
                           {item.name}{" "}
-                          <span className="text-muted">({item?.category?.name})</span>
+                          <span className="text-muted">
+                            ({item?.category?.name})
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -124,7 +139,10 @@ function Header() {
               <a className="Search-sec">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </a>
-              <a className="wish-sec">
+              <a className="noti-sec">
+                {wishlist?.length> 0&& (
+                  <small className="noti-text">{wishlist?.length}</small>
+                )}
                 <FontAwesomeIcon icon={faHeart} />
               </a>
               <a className="noti-sec" onClick={() => navigate("/cart")}>

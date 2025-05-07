@@ -7,21 +7,64 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ProductImg1 from "../../assets/images/product-img-1.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  addToWishlistProduct,
+  removeFromWishlistProduct,
+  updateRecentlyViewed,
+} from "./helper";
+import "../Home/Home.scss"
+import { useDispatch } from "react-redux";
 
-const ProductInfo = ({ product, handleAddToCart, cartProductIds, key }) => {
+const ProductInfo = ({
+  product,
+  inventory,
+  handleAddToCart,
+  cartProductIds,
+  wishListProductId,
+}) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const productInventory = product?.inventory ||inventory|| [];
+
+  const updateRecentlyViewProduct = () => {
+    try {
+      updateRecentlyViewed(user.id, product.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div
       className="item"
       style={{ width: "auto" }}
-      onClick={() => navigate(`/product-details/${product.id}`)}
+      onClick={() => {
+        updateRecentlyViewProduct();
+        navigate(`/product-details/${product.id}`);
+      }}
     >
       <div className="product-sec-slider">
         <div className="info-tag">
           <ul className="info-tag-list">
-            <li>
+            <li
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                wishListProductId?.includes(product.id)
+                  ? removeFromWishlistProduct(user.id, product.id, dispatch)
+                  : addToWishlistProduct(user.id, product.id, dispatch);
+              }}
+            >
               <a>
-                <FontAwesomeIcon icon={faHeart} />
+                <FontAwesomeIcon
+                  className={`${
+                    wishListProductId?.includes(product.id)
+                      ? "selected-wishlist"
+                      : ""
+                  }`}
+                  icon={faHeart}
+                />
               </a>
             </li>
             <li>
@@ -44,6 +87,7 @@ const ProductInfo = ({ product, handleAddToCart, cartProductIds, key }) => {
               </li>
             ))}
           </ul>
+         {!productInventory || productInventory.length == 0 && <p className="oos">Out of stock {productInventory[0]?.quantity}</p>}
           <div className="price-tag">
             <p>
               ${product.price} <del>${product.price}</del>
@@ -66,7 +110,7 @@ const ProductInfo = ({ product, handleAddToCart, cartProductIds, key }) => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                handleAddToCart(product);
+                handleAddToCart(product, dispatch);
               }}
             >
               Add to cart

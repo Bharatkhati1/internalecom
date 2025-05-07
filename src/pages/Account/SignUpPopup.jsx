@@ -21,13 +21,10 @@ const SignUpForm = ({ onSignUp, onClose }) => {
                 email,
                 password,
             });
-console.log({response})
             if (response.status === 201) {
                 const { token, user } = response.data;
                 localStorage.setItem("token", token);
                 localStorage.setItem("user", JSON.stringify(user));
-
-                console.log("Signup Successful:", user);
                 onSignUp(); // Any additional signup handling
                 onClose(); // Close modal after successful signup
             }

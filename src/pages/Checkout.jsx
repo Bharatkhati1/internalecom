@@ -32,19 +32,19 @@ function Checkout() {
     0
   );
   const [products, setProducts] = useState();
-  const location = useLocation();
-  const { totalAmt, shippingCharge, discount, tax } = location.state || {};
+  const [shippingCharge, setShippingCharge] = useState(0)
   const [loading, setLoading] = useState(true);
   const cartState = useSelector((state) => state.cart);
   const [cartItems, setCartItems] = useState(cartState || []);
   const [discountCode, setDiscountCode] = useState("");
-  const [appliedDiscount, setAppliedDiscount] = useState(discount || 0);
+  const [appliedDiscount, setAppliedDiscount] = useState( 0);
   const [error, setError] = useState("");
   const [addressError, setAddressError] = useState("");
   const [user, setUser] = useState(() =>
     JSON.parse(localStorage.getItem("user"))
   );
   const [addresses, setAddresses] = useState([]);
+  const [tax, setTax] = useState(10)
   const userId = user?.id;
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [newAddress, setNewAddress] = useState({
@@ -85,13 +85,13 @@ function Checkout() {
     setAddressError("");
 
     // Calculate discount amount from percentage
-    const discountAmount = (totalAmt * appliedDiscount) / 100;
+    const discountAmount = (totalPrice * appliedDiscount) / 100;
 
-    navigate("/purchase", {
+    navigate("/OrderSummary", {
       state: {
         products: products,
         total: (
-          totalAmt +
+          totalPrice +
           shippingCharge +
           parseFloat(tax) -
           discountAmount

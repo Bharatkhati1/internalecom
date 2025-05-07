@@ -15,10 +15,15 @@ import SignIn from "./pages/Account/SignIn";
 import SignUp from "./pages/Account/SignUp";
 import UserProfile from "./pages/Profile/Profile";
 import AppLayout from "./Components/AppLayout";
+import { ToastContainer } from "react-toastify";
+import OrderListing from "./pages/OrderListing";
+import NotificationSetup from "./Components/NotificationSetup";
 
 function App() {
   return (
     <Router>
+      <NotificationSetup />
+      <ToastContainer position="top-right" autoClose={1800} />
       <Routes>
         <Route element={<AppLayout />}>
           <Route path="/" element={<Home />} />
@@ -30,6 +35,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/Cart" element={<Cart />} />
           <Route path="/OrderSummary" element={<OrderSummary />} />
+          <Route path="/all-orders" element={<OrderListing />}></Route>
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/TermsCondition" element={<TermsCondition />} />
           <Route path="/Blogs" element={<Blogs />} />

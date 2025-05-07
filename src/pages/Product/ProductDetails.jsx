@@ -18,7 +18,6 @@ function ProductDetails() {
   const { cartProducts = [] } = useSelector((state) => state.orebi);
 
   const cartProductIds = cartProducts.map((p) => p.id || p._id);
-console.log(cartProducts, cartProductIds)
   const [productInfo, setProductInfo] = useState({});
   const [selectedImage, setSelectedImage] = useState("");
   const fetchProductDetails = async (productId) => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "https://dotecom.24livehost.com/ecommerce"; // Change this to your API base URL
+const BASE_URL = "http://localhost:3003"; // Change this to your API base URL
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -43,6 +43,56 @@ export const putecomData = async (endpoint, data) => {
 
 // Function to handle DELETE requests
 export const deleteecomData = async (endpoint) => {
+  try {
+    const response = await api.delete(endpoint);
+    return response.data;
+  } catch (error) {
+    console.error("API DELETE Error:", error);
+    throw error;
+  }
+};
+
+export const addToWishlist = async (endpoint, data) => {
+  try {
+    const response = await api.post(endpoint, data);
+    return response.data;
+  } catch (error) {
+    console.error("API DELETE Error:", error);
+    throw error;
+  }
+};
+
+export const updateRecentlyView = async (endpoint, data) => {
+  try {
+    const response = await api.post(endpoint, data);
+    return response.data;
+  } catch (error) {
+    console.error("API DELETE Error:", error);
+    throw error;
+  }
+};
+
+export const getRecentlyViewed = async (endpoint) => {
+  try {
+    const response = await api.get(endpoint);
+    return response.data;
+  } catch (error) {
+    console.error("API DELETE Error:", error);
+    throw error;
+  }
+};
+
+export const getWishlistProducts = async (endpoint) => {
+  try {
+    const response = await api.get(endpoint);
+    return response.data;
+  } catch (error) {
+    console.error("API DELETE Error:", error);
+    throw error;
+  }
+};
+
+export const removceFromWishList = async (endpoint) => {
   try {
     const response = await api.delete(endpoint);
     return response.data;
