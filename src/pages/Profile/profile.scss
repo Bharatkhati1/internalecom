@@ -20,7 +20,7 @@
       .avatar {
         width: 5rem;
         height: 5rem;
-        background-color: #2563eb;
+        background-color: #f48223;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -79,17 +79,18 @@
           .icon-container {
             width: 3rem;
             height: 3rem;
-            background-color: #dbeafe;
             border-radius: 0.5rem;
-            display: flex;
+            display: flex
+        ;
             align-items: center;
             justify-content: center;
             margin-right: 1rem;
+            border: 1px solid #2c3e7d;
   
             svg {
               width: 1.5rem;
               height: 1.5rem;
-              color: #2563eb;
+              color: #f28323;
             }
           }
   
@@ -112,7 +113,7 @@
   
       nav {
         display: flex;
-        gap: 2rem;
+        
   
         button {
           white-space: nowrap;
@@ -122,6 +123,10 @@
           font-size: 0.875rem;
           color: #6b7280;
           border-color: transparent;
+          border: 0;
+          padding: 10px 24px;
+          font-size: 14px;
+          font-weight: 400;
   
           &:hover {
             color: #374151;
@@ -129,8 +134,9 @@
           }
   
           &.active {
-            color: #2563eb;
-            border-color: #2563eb;
+            border-color: #2c3e7d;
+            background: #2c3e7d;
+           color: #fff;
           }
         }
       }
@@ -222,7 +228,7 @@
             &:hover {
               background-color: #1d4ed8;
             }
-          }
+          } 
   
           &.reset-btn {
             color: #2563eb;

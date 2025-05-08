@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import logoImage from "../../assets/images/company-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+
+import userImg from '../../assets/images/user.png'
 import {
   faBell,
   faCartShopping,
@@ -90,7 +93,7 @@ function Header() {
   return (
     <header>
       {location?.pathname === "/" && <Topbar />}
-      <div className="sec-heade">
+      <div className="sec-heade ">
         <div className="container">
           <div className="sec-heade-inner d-flex justify-content-between">
             <a onClick={() => navigate("/")} className="company-logo">
@@ -150,6 +153,51 @@ function Header() {
                   <small className="noti-text">{cartCount}</small>
                 )}
                 <FontAwesomeIcon icon={faCartShopping} />
+
+                <div className="NotificationBox">
+
+                 <div className="NotificationsHead d-flex justify-content-between"><h4>Notifications</h4>
+
+                  <a className="closeBox"><FontAwesomeIcon icon={faXmark} /></a></div> 
+
+                  
+                  <ul className="NotificationBoxList">
+                    <li className="Unread-noti">
+                      <figure><img src={userImg}/></figure>
+                      <figcaption>
+                        <h4>Mason Wright  </h4>
+                        <span>printing and typesetting</span>
+                        <div className="timedate">12/04/2025 | 15.50 Pm</div>
+                      </figcaption>
+                    </li>
+                    <li>
+                      <figure><img src={userImg}/></figure>
+                      <figcaption>
+                      <h4>Mason Wright  </h4>
+                        <span>printing and typesetting</span>
+                        <div className="timedate">12/04/2025 | 15.50 Pm</div>
+                      </figcaption>
+                    </li>
+                    <li>
+                      <figure><img src={userImg}/></figure>
+                      <figcaption>
+                      <h4>Mason Wright  </h4>
+                        <span>printing and typesetting</span>
+                        <div className="timedate">12/04/2025 | 15.50 Pm</div>
+                      </figcaption>
+                    </li>
+                    <li>
+                      <figure><img src={userImg}/></figure>
+                      <figcaption>
+                      <h4>Mason Wright  </h4>
+                        <span>printing and typesetting</span>
+                        <div className="timedate">12/04/2025 | 15.50 Pm</div>
+                      </figcaption>
+                    </li>
+                  </ul>
+
+                  <a className="UnseenBox">Unseen</a>
+                  </div>
               </a>
               <a className="noti-sec">
                 {/* <small className="noti-text">1</small> */}
