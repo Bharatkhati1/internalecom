@@ -52,7 +52,7 @@ const UserProfile = () => {
         throw new Error("Failed to fetch user data");
       }
 
-      const data = response.data;
+      const data = response.data.data;
       setUser(data);
 
       setFormData({

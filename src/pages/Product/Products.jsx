@@ -44,7 +44,7 @@ function Products() {
     });
   };
   
-  const cartProductIds = cartProducts.map((p) => p.id);
+  const cartProductIds = cartProducts.map((p) => p.id || p._id);
 
   const fetchData = async () => {
     setLoading(true);

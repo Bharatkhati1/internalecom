@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 const NotificationSetup = () => {
   const user = localStorage.getItem("user");
   const userDetails = JSON.parse(user);
-
+  console.log("key", import.meta.env.VITE_FCE_KEY)
   useEffect(() => {
     const setupNotifications = async () => {
       try {

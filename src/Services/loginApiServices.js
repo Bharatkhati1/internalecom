@@ -23,7 +23,7 @@ export const getloginData = async (endpoint) => {
 export const postloginData = async (endpoint, data) => {
   try {
     const response = await api.post(endpoint, data);
-    return response;
+    return response.data;
   } catch (error) {
     console.error("API POST Error:", error);
     throw error;

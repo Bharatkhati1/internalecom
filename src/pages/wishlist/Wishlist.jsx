@@ -11,12 +11,12 @@ import { toast } from "react-toastify";
 const Wishlist = () => {
   const { wishlist, cartProducts } = useSelector((state) => state.orebi);
   const userData = JSON.parse(localStorage.getItem("user"));
-  const cartProductIds = cartProducts.map((p) => p.id);
+  const cartProductIds = cartProducts.map((p) => p.id||p._id);
   const wishListProductId = wishlist.map((item)=> item.product.id);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const dispatch = useDispatch();
-  console.log(wishlist);
+  console.log(cartProductIds);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -40,9 +40,9 @@ const Wishlist = () => {
       toast.error("Please login to add items to your cart.");
     }
   };
-
+console.log(userData)
   useEffect(() => {
-    if (userData.id) {
+    if (userData?.id) {
       dispatch(fetchWishlist(userData.id));
     }
   }, []);
