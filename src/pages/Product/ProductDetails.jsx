@@ -12,14 +12,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartCount } from "../../redux/orebiSlice";
 import { postecomData } from "../../Services/ecomapiServices";
 function ProductDetails() {
- const navigate = useNavigate();
- const dispatch= useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id } = useParams();
   const { cartProducts = [] } = useSelector((state) => state.orebi);
-
   const cartProductIds = cartProducts.map((p) => p.id || p._id);
   const [productInfo, setProductInfo] = useState({});
   const [selectedImage, setSelectedImage] = useState("");
+  const [colorSizeInfo, setColorSizeInfo] = useState({
+    color: null,
+    size: null,
+  });
+
   const fetchProductDetails = async (productId) => {
     try {
       const response = await getprodData(`/products/${productId}`);
@@ -27,32 +31,40 @@ function ProductDetails() {
         const productData = response.data.data;
         setProductInfo(productData);
         setSelectedImage(productData.imageUrls?.[0] || "");
-      //   setCategory(productData.category);
+        const extracted = { color: null, size: null };
+        productData.attributes?.forEach((attr) => {
+          const name = attr.categoryAttribute?.name?.toLowerCase();
+          if (name === "color" || name === "size") {
+            extracted[name] = attr.value;
+          }
+        });
+        setColorSizeInfo(extracted);
       }
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
   };
 
-    const handleAddToCart = async (product) => {
-      const token = localStorage.getItem("token");
-      const user = localStorage.getItem("user");
-      const userDetails = JSON.parse(user);
-      if (token && user) {
-        const cartData = {
-          userId: userDetails.id,
-          productId: product.id,
-          quantity: 1,
-        };
-       await postecomData("cart/add", cartData);
+  const handleAddToCart = async (product) => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    const userDetails = JSON.parse(user);
+    if (token && user) {
+      const cartData = {
+        userId: userDetails.id,
+        productId: product.id,
+        quantity: 1,
+      };
+      await postecomData("cart/add", cartData);
 
-        dispatch(addToCart(product));
-        dispatch(fetchCartCount(userDetails.id));
-      } else {
-        alert("Please login to add items to your cart.");
-      }
-    };
+      dispatch(addToCart(product));
+      dispatch(fetchCartCount(userDetails.id));
+    } else {
+      alert("Please login to add items to your cart.");
+    }
+  };
 
+  console.log(colorSizeInfo);
   useEffect(() => {
     if (id) {
       fetchProductDetails(id);
@@ -93,38 +105,47 @@ function ProductDetails() {
                 </p>
               </div>
               <p class="in-stock-text">In stock </p>
+              <div className="mt-3">
+              <p>
+                <strong>Color:</strong> {colorSizeInfo.color || "N/A"}
+              </p>
+              <p>
+                <strong>Size:</strong> {colorSizeInfo.size || "N/A"}
+              </p>
+            </div>
               <p>{productInfo?.description}</p>
               <div class="btn-box-detail mt-4">
-              <a class="btn btn-primary mt-0 big-btn">Buy Now</a> 
-              {cartProductIds.includes(productInfo?.id) ? (
-            <a
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                navigate(`/cart`);
-              }}
-             class="btn btn-secondry mt-0 big-btn ms-3"
-            >
-              Go to cart
-            </a>
-          ) : (
-            <a
-           class="btn btn-secondry mt-0 big-btn ms-3"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleAddToCart(productInfo);
-              }}
-            >
-              Add to cart
-            </a>
-          )}
-                  <div class="wishlist-icon ms-3">
-                     <FontAwesomeIcon icon={faHeart} />
-                  </div>
-               </div>
+                <a class="btn btn-primary mt-0 big-btn">Buy Now</a>
+                {cartProductIds.includes(productInfo?.id) ? (
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate(`/cart`);
+                    }}
+                    class="btn btn-secondry mt-0 big-btn ms-3"
+                  >
+                    Go to cart
+                  </a>
+                ) : (
+                  <a
+                    class="btn btn-secondry mt-0 big-btn ms-3"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleAddToCart(productInfo);
+                    }}
+                  >
+                    Add to cart
+                  </a>
+                )}
+                <div class="wishlist-icon ms-3">
+                  <FontAwesomeIcon icon={faHeart} />
+                </div>
+              </div>
             </div>
-            <ReviewSection productId={id}/>
+      
+            <ReviewSection productId={id} />
             <div className="col-md-12 similar-product">
               <div class="head-title ">
                 <h2>Recent Product</h2>

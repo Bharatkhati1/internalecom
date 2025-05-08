@@ -16,7 +16,7 @@ const NotificationSetup = () => {
       try {
         const token = await getToken(messaging, {
           vapidKey:
-            process.env.FCE_KEY,
+          import.meta.env.VITE_FCE_KEY,
         });
         if (token) {
           await registerDevice({

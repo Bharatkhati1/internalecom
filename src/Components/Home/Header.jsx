@@ -83,7 +83,7 @@ function Header() {
   };
 
   useEffect(() => {
-    dispatch(fetchWishlist(user?.id))
+    dispatch(fetchWishlist(user?.id));
     dispatch(fetchCartCount(user?.id));
   }, [dispatch]);
 
@@ -139,8 +139,8 @@ function Header() {
               <a className="Search-sec">
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
               </a>
-              <a className="noti-sec">
-                {wishlist?.length> 0&& (
+              <a className="noti-sec" onClick={() => navigate("/wishlist")}>
+                {wishlist?.length > 0 && (
                   <small className="noti-text">{wishlist?.length}</small>
                 )}
                 <FontAwesomeIcon icon={faHeart} />

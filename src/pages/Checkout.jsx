@@ -209,7 +209,7 @@ function Checkout() {
     try {
       const response = await getecomData(`/discounts/code/${discountCode}`);
       if (response.status === "success" && response.data?.discountPercentage) {
-        const discountValue = response.data.discountPercentage; // Percentage value
+        const discountValue = response.data.discountPercentage;
         setAppliedDiscount(discountValue);
         setError("");
       } else {

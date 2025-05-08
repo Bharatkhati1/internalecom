@@ -790,6 +790,7 @@ body .btn.big-btn {
 }
 .product-sec-slider {
   margin-bottom: 25px;
+  position: relative;
 }
 .product-sec-slider {
   background: #Fff;

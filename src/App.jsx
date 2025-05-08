@@ -18,6 +18,7 @@ import AppLayout from "./Components/AppLayout";
 import { ToastContainer } from "react-toastify";
 import OrderListing from "./pages/OrderListing";
 import NotificationSetup from "./Components/NotificationSetup";
+import Wishlist from "./pages/wishlist/Wishlist";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/ContactUs" element={<ContactUs />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/Cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/OrderSummary" element={<OrderSummary />} />
           <Route path="/all-orders" element={<OrderListing />}></Route>
           <Route path="/FAQ" element={<FAQ />} />
