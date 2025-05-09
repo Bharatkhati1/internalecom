@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:3001"; // Change this to your API base URL
+const BASE_URL = "http://192.168.10.107:3001"; // Change this to your API base URL
 
 const api = axios.create({
   baseURL: BASE_URL,

@@ -2158,3 +2158,289 @@ button.navbar-toggler {
 
 
 /* // signup */
+
+
+/* The container */
+.radioCoutomBox{
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radioCoutomBox  input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  top: 0;
+}
+
+/* Create a custom radio button */
+.radioCoutomBox .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  visibility: hidden;
+}
+
+/* On mouse-over, add a grey background color */
+.radioCoutomBox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radioCoutomBox input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radioCoutomBox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radioCoutomBox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radioCoutomBox .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+
+.RadiolabelBox {
+  border: 1px solid #ddd;
+  font-size: 18px;
+  padding: 2px 10px;
+  font-size: 14px;
+}
+
+label.RadioCoustom {
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.radioCoutomBox {
+  padding-left: 0;
+  margin-bottom: 0;
+  margin: 10px 0;
+}
+.radioCoutomBox input:checked ~ .RadiolabelBox {
+  border: 1px solid #2c3e7c;
+  color: #fff;
+  background: #2c3e7c;
+}
+
+ul.radioCoutomBox li {
+  margin-right: 9px;
+}
+
+.RadiolabelBox.ColorBox {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.RadiolabelBox.ColorBox.greyColor {
+  background: grey;
+}
+
+.RadiolabelBox.ColorBox.blackColor {
+  background: #000;
+}
+
+ul.Highlights-list li {
+  font-size: 14px;
+  list-style: disc;
+  list-style-position: inside;
+  margin-bottom: 4px;
+}
+
+.selectItemsBox strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+button.rate-button {
+  border: 0;
+}
+
+.ColorRadioCoustom input:checked ~ .ColorBox.greyColor {
+  border: 2px solid hsl(226.5deg 47.62% 32.94% / 40%);
+  color: #fff;
+  background: grey;
+}
+
+
+.ColorRadioCoustom input:checked ~ .ColorBox.blackColor{
+  background: black;
+  border: 2px solid hsl(226.5deg 47.62% 32.94% / 40%);
+
+}
+
+.ColorRadioCoustom input:checked ~ .ColorBox.whiteColor{
+  background: #fff;
+  border: 2px solid hsl(226.5deg 47.62% 32.94% / 40%);
+
+}
+
+.NotificationBox {
+    position: absolute;
+    right: -58px;
+    top: 38px;
+    min-width: 400px;
+    background: #Fff;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    padding-bottom: 15px;
+    z-index: 1;
+}
+
+ul.NotificationBoxList li {
+  display: flex;
+      border-bottom: 1px solid #ddd;
+   
+ 
+      padding: 15px 15px 5px;
+}
+
+ul.NotificationBoxList li figure img {
+  width: 35px;
+  height: 35px;
+}
+
+ul.NotificationBoxList li figure { margin-right: 15px;}
+
+ul.NotificationBoxList figcaption h4 {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+ul.NotificationBoxList li figcaption span {
+  font-size: 13px;
+  color: hsl(0deg 0% 0% / 41.18%);
+}
+
+ul.NotificationBoxList li {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+
+}
+.NotificationBox h4 {
+  font-size: 18px;
+  padding: 4px 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+a.closeBox {
+  border-left: 0;
+  padding-left: 0;
+  cursor: pointer;
+}
+
+.NotificationsHead {
+  margin-bottom: 25px;
+}
+
+.NotificationBoxList li:last-child {
+  margin-bottom: 0;
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.NotificationBoxList {
+  margin-bottom: 0;
+  height: 350px;
+  overflow: auto;
+}
+.timedate {
+  font-size: 10px;
+  text-align: right;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 33px;
+}
+
+.NotificationBoxList figcaption {
+  flex: 1;
+  position: relative;
+}
+
+.timedate {
+  font-size: 11px;
+  text-align: right;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: hsl(0deg 0% 0% / 52.16%);
+}
+
+.UnseenBox {
+  border: 0;
+  margin: 0;
+  background: #000;
+  color: #fff;
+  padding: 7px 10px;
+  max-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-left: auto !important;
+  margin-right: 12px;
+  cursor: pointer;
+}
+.NotificationsHead {
+  padding: 12px 20px;
+  margin-bottom: 0;
+}
+
+.NotificationBoxList .Unread-noti {
+  background: hsl(152.18deg 68.75% 31.37% / 6%);
+}
+
+.user-profile .profile-form .form-actions button.save-btn:hover {
+  background-color: #2c3e7c;
+}
+
+.user-profile .profile-form .form-actions button.save-btn {
+  color: white;
+  background-color: #30427f;
+  border-radius: 33px;
+  font-weight: 400;
+  font-size: 13px;
+}

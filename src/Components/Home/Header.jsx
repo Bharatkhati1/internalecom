@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import logoImage from "../../assets/images/company-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+
+import userImg from "../../assets/images/user.png";
 import {
   faBell,
   faCartShopping,
@@ -16,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   fetchCartCount,
   fetchCartData,
+  fetchNotifications,
   fetchWishlist,
   logOut,
   resetCart,
@@ -29,9 +33,12 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-  const { cartCount, wishlist } = useSelector((state) => state.orebi);
+  const { cartCount, wishlist, allNotifications } = useSelector(
+    (state) => state.orebi
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [user, setUSer] = useState(() =>
     JSON.parse(localStorage.getItem("user"))
   );
@@ -84,13 +91,32 @@ function Header() {
 
   useEffect(() => {
     dispatch(fetchWishlist(user?.id));
+    dispatch(fetchNotifications(user?.id));
     dispatch(fetchCartCount(user?.id));
   }, [dispatch]);
+
+  function formatDate(sentAt) {
+    const dateObj = new Date(sentAt);
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const year = dateObj.getFullYear();
+
+    let hours = dateObj.getHours();
+    const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "Pm" : "Am";
+    hours = hours % 12;
+    hours = hours === 0 ? 12 : hours;
+
+    const formattedTime = `${hours}.${minutes} ${ampm}`;
+    const formattedDate = `${day}/${month}/${year}`;
+
+    return `${formattedDate} | ${formattedTime}`;
+  }
 
   return (
     <header>
       {location?.pathname === "/" && <Topbar />}
-      <div className="sec-heade">
+      <div className="sec-heade ">
         <div className="container">
           <div className="sec-heade-inner d-flex justify-content-between">
             <a onClick={() => navigate("/")} className="company-logo">
@@ -150,8 +176,47 @@ function Header() {
                   <small className="noti-text">{cartCount}</small>
                 )}
                 <FontAwesomeIcon icon={faCartShopping} />
+                {showNotifications && (
+                  <div
+                    className="NotificationBox"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="NotificationsHead d-flex justify-content-between">
+                      <h4>Notifications</h4>
+                      <a className="closeBox">
+                        <FontAwesomeIcon
+                          icon={faXmark}
+                          onClick={() =>
+                            setShowNotifications(!showNotifications)
+                          }
+                        />
+                      </a>
+                    </div>
+                    <ul className="NotificationBoxList">
+                      {allNotifications.map((notif) => (
+                        <li className="Unread-noti">
+                          <figure>
+                            <img src={userImg} />
+                          </figure>
+                          <figcaption>
+                            <h4>{notif.message.title}</h4>
+                            <span>{notif.message.body}</span>
+                            <div className="timedate">
+                              {formatDate(notif.sentAt)}
+                            </div>
+                          </figcaption>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <a className="UnseenBox">Seen All</a>
+                  </div>
+                )}
               </a>
-              <a className="noti-sec">
+              <a
+                className="noti-sec"
+                onClick={() => setShowNotifications(!showNotifications)}
+              >
                 {/* <small className="noti-text">1</small> */}
                 <FontAwesomeIcon icon={faBell} />
               </a>

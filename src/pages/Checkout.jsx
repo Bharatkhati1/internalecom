@@ -116,8 +116,8 @@ function Checkout() {
       const response = await getloginData(`address/user/${userId}`);
 
       if (response.status == 200) {
-        setAddresses(response.data);
-        setSelectedAddress(response.data[0]?.id || "");
+        setAddresses(response.data.data);
+        setSelectedAddress(response.data.data[0]?.id || "");
       }
     } catch (error) {
       console.error("Error fetching addresses:", error);

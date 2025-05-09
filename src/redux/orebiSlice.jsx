@@ -5,6 +5,7 @@ import {
   getRecentlyViewed,
   getWishlistProducts,
 } from "../Services/ecomapiServices";
+import { getDataEmail } from "../Services/emailApiServices";
 
 // Fetch new arrivals
 export const fetchNewProducts = createAsyncThunk(
@@ -127,11 +128,27 @@ export const fetchWishlist = createAsyncThunk(
   }
 );
 
+export const fetchNotifications = createAsyncThunk(
+  "orebi/fetchNotifications",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await getDataEmail(`/message/all/${userId}`);
+      if (!response.status) return [];
+      return response.data.data|| [];
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "Failed to fetch cart data"
+      );
+    }
+  }
+);
+
 const initialState = {
   userInfo: [],
   products: [],
   wishlist: [],
   topDeals: [],
+  allNotifications: [],
   recentlyViewed: [],
   discount: 0,
   cartProducts: [],
@@ -198,6 +215,10 @@ export const orebiSlice = createSlice({
       .addCase(fetchNewProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.newProducts = action.payload;
+      })
+      .addCase(fetchNotifications.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allNotifications = action.payload;
       })
       .addCase(fetchCartCount.fulfilled, (state, action) => {
         state.loading = false;

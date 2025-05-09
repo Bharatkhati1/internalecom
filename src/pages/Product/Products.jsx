@@ -66,8 +66,8 @@ function Products() {
         filterPayload.attributeFilters = attributeFilters;
       }
 
-      filterPayload.page = currentPage; // Use currentPage state
-      filterPayload.limit = pageSize; // Use pageSize state
+      filterPayload.page = currentPage;
+      filterPayload.limit = pageSize;
 
       const [productRes, filterRes] = await Promise.all([
         filterProducts("/filters/filter", filterPayload),
@@ -275,7 +275,7 @@ function Products() {
             </div>
             <div className="col-md-9 product-category-right">
               <div className="main-filters-top d-flex align-items-center justify-content-between">
-                <h4>There are 15 products.</h4>
+                <h4>showing {products?.length} products.</h4>
                 <div className="filters-sec">
                   <label>Sort By</label>
                   <select
