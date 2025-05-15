@@ -17,13 +17,13 @@ import UserProfile from "./pages/Profile/Profile";
 import AppLayout from "./Components/AppLayout";
 import { ToastContainer } from "react-toastify";
 import OrderListing from "./pages/OrderListing";
-import NotificationSetup from "./Components/NotificationSetup";
+// import NotificationSetup from "./Components/NotificationSetup";
 import Wishlist from "./pages/wishlist/Wishlist";
 
 function App() {
   return (
     <Router>
-      <NotificationSetup />
+      {/* <NotificationSetup /> */}
       <ToastContainer position="top-right" autoClose={1800} />
       <Routes>
         <Route element={<AppLayout />}>

@@ -91,7 +91,7 @@ function Header() {
 
   useEffect(() => {
     dispatch(fetchWishlist(user?.id));
-    dispatch(fetchNotifications(user?.id));
+    // dispatch(fetchNotifications(user?.id));
     dispatch(fetchCartCount(user?.id));
   }, [dispatch]);
 

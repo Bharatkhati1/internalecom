@@ -80,16 +80,14 @@ function LatestBlog() {
   };
 
   const handleSendNotification = () => {
-    sendNotification({
-      // userId: user.id,
-      userId:"c1bff2c4-aff2-4737-967c-2896cdd1aed6",
-      ...notificationTemplates.orderConfirmation(11),
-    });
+    // sendNotification({
+    //   userId:"c1bff2c4-aff2-4737-967c-2896cdd1aed6",
+    //   ...notificationTemplates.orderConfirmation(11),
+    // });
   };
 
   return (
     <>
-      <button onClick={() => handleSendNotification()}>click here send</button>
       {blogsData.length > 0 && (
         <section className="lates-blog">
           <div className="container">

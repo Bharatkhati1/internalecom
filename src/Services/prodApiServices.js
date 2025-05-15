@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = "http://192.168.10.107:3001"; // Change this to your API base URL
+// const BASE_URL = "http://192.168.10.107:3001";
+ const BASE_URL = "https://dotecom.24livehost.com/product"
 
 const api = axios.create({
   baseURL: BASE_URL,

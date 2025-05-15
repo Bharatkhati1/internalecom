@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = "http://192.168.10.107:3004"; 
+// const BASE_URL = "http://192.168.10.107:3004"; 
+const BASE_URL = "https://dotecom.24livehost.com/ecommerce"
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -37,10 +38,3 @@ export const postDataEmail = async (endpoint, data) => {
     throw error;
   }
 };
-
-
-// axiosInstance.post("/notification/multidevice-Notification", {
-//     title: "Quiz Assigned",
-//     message: "A quiz has been assigned to you.",
-//     userIds: assignUsers,
-//   });

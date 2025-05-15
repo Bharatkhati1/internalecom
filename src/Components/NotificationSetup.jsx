@@ -6,11 +6,13 @@ import { messaging } from "../Services/firebase";
 // Optional: You can replace alert with a custom toast or modal for better UX
 import { toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css"; 
+import { useDispatch } from "react-redux";
+import { fetchNotifications } from "../redux/orebiSlice";
 
 const NotificationSetup = () => {
   const user = localStorage.getItem("user");
   const userDetails = JSON.parse(user);
-  console.log("key", import.meta.env.VITE_FCE_KEY)
+  const dispatch = useDispatch();
   useEffect(() => {
     const setupNotifications = async () => {
       try {
@@ -38,7 +40,7 @@ const NotificationSetup = () => {
     // Foreground notification listener using Firebase Messaging
     const unsubscribe = onMessage(messaging, (payload) => {
       console.log("🔥 Message received in foreground:", payload);
-
+      dispatch(fetchNotifications(userDetails?.id));
       const notificationTitle = payload.notification.title;
       const notificationBody = payload.notification.body;
 
